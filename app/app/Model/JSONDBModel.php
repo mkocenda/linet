@@ -9,10 +9,10 @@ use Nette\Utils\Json;
 class JSONDBModel
 {
 
-    public $JSONdata;
+    public $JSONfile;
     public function __construct()
     {
-        $this->JSONdata = file_get_contents(__DIR__.'/../../../data/orders-data.json');
+        $this->JSONfile = __DIR__.'/../../../data/orders-data.json';
     }
     
     
@@ -21,7 +21,7 @@ class JSONDBModel
      */
     public function loadData() : array
     {
-        return $this->decode($this->JSONdata);
+        return $this->decode(file_get_contents($this->JSONfile));
     }
     
     
@@ -31,7 +31,7 @@ class JSONDBModel
      */
     public function saveData(ArrayHash $data)
     {
-    
+        return file_put_contents($this->JSONfile, $this->encode($data));
     }
     
     
