@@ -18,3 +18,4 @@ services:
     - App\App\Model\OrderModel
     - App\App\Model\CustomerModel
     - App\App\Model\Types
+    - App\App\Service\OrderService
