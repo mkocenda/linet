@@ -1,0 +1,20 @@
+php:
+    date.timezone: Europe/Prague
+
+application:
+    errorPresenter: Error
+    mapping:
+        *: App\*\Presenter\*Presenter
+
+extensions:
+
+session:
+    expiration: 14 days
+
+services:
+    router: App\RouterFactory::createRouter
+
+    - App\App\Model\JSONDBModel
+    - App\App\Model\OrderModel
+    - App\App\Model\CustomerModel
+    - App\App\Model\Types

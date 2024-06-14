@@ -1,0 +1,17 @@
+{
+	"require": {
+		"php": "= 8.0",
+		"nette/nette":"^v3.0",
+		"nette/utils":"^v3.0",
+		"nette/security": "^v3.0",
+		"nette/deprecated": "^3.0",
+		"latte/latte":"^v2.8.0",
+		"ublaboo/datagrid": "^v6.7.1",
+		"ublaboo/datagrid-nette-database-data-source": "^v2.1.1"
+    },
+	"config": {
+		"platform": {
+			"php": "8.0"
+		}
+	}
+}
