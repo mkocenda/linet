@@ -17,13 +17,12 @@ class JSONDBModel
     
     
     /**
-     * @return Json
+     * @return array
      */
-    public function loadData() : JSON
+    public function loadData() : array
     {
-        return $this->decode($this->data);
+        return $this->decode($this->JSONdata);
     }
-    
     
     
     /**
