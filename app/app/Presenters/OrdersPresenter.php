@@ -4,24 +4,37 @@ declare(strict_types=1);
 namespace App\App\Presenter;
 
 use App\App\Model\OrderModel;
+use App\App\Service\OrderService;
 use App\App\Model\CustomerModel;
 use Nette\Application\UI\Form;
 use Nette\Utils\ArrayHash;
 use Ublaboo\DataGrid\DataGrid;
 use App\App\Model\Types;
+use Tracy\ILogger;
 
 /**
  * Presenter pro výpis
  */
 class OrdersPresenter extends BasePresenter
 {
+    /** @var OrderModel  */
     public $orderModel;
+    
+    /** @var OrderService */
+    public $orderService;
+    
+    /** @var CustomerModel  */
     public $customerModel;
+    
+    /** @var ILogger @inject */
+    public $log;
+    /** @var int */
     public $id;
     
-    public function __construct(OrderModel $orderModel, CustomerModel $customerModel)
+    public function __construct(OrderModel $orderModel, OrderService $orderService, CustomerModel $customerModel)
     {
-        $this->orderModel =$orderModel;
+        $this->orderModel = $orderModel;
+        $this->orderService = $orderService;
         $this->customerModel = $customerModel;
     }
     
@@ -42,7 +55,7 @@ class OrdersPresenter extends BasePresenter
     public function createComponentGridList(string $name) : DataGrid
     {
         $grid = new DataGrid($this, $name);
-        $grid->setDataSource($this->orderModel->listAllrecords());
+        $grid->setDataSource($this->orderModel->listAllRecords());
         $grid->setDefaultSort('id');
         $grid->addColumnText('orderNumber', 'OrderNumber');
         $grid->addColumnDateTime('createdAt', 'CreatedAt');
@@ -93,13 +106,18 @@ class OrdersPresenter extends BasePresenter
         return $form;
     }
     
-    public function saveData(Form $form, ArrayHash $data)
+    /**
+     * @param Form $form
+     * @param ArrayHash $data
+     * @return void
+     */
+    public function saveData(Form $form, \stdClass $data) : void
     {
         try {
-        
+            $this->orderService->saveData($data);
         } catch (\Exception $e)
         {
-        
+            $this->log->log('Chyba při ukládání dat z formuláře '.$e->getMessage(),'ERROR');
         }
     }
 }
