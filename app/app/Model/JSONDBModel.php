@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace App\App\Model;
 
-use Nette\Utils\ArrayHash;
-use Nette\Utils\Json;
+use JsonException;
 
 class JSONDBModel
 {
 
-    public $JSONfile;
+    public string $JSONfile;
     public function __construct()
     {
         $this->JSONfile = __DIR__.'/../../../data/orders-data.json';
@@ -18,6 +17,7 @@ class JSONDBModel
     
     /**
      * @return array
+     * @throws JsonException
      */
     public function loadData() : array
     {
@@ -27,23 +27,25 @@ class JSONDBModel
     
     /**
      * @param array $data
-     * @return false|int
+     * @return void
+     * @throws JsonException
      */
-    public function saveData(array $data)
+    public function saveData(array $data) : void
     {
-        return file_put_contents($this->JSONfile, $this->encode($data));
+        file_put_contents($this->JSONfile, $this->encode($data));
     }
     
     
     /**
      * @param array $value
      * @return string
+     * @throws JsonException
      */
     private function encode(array $value) : string
     {
         $json = json_encode($value);
         if (json_last_error()) {
-            throw new JsonException;
+            throw new JsonException();
         }
         return $json;
     }
@@ -51,6 +53,7 @@ class JSONDBModel
     /**
      * @param string $json
      * @return array
+     * @throws JsonException
      */
     private function decode(string $json) : array
     {

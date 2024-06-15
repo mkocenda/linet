@@ -6,33 +6,33 @@ namespace App\App\Presenter;
 use App\App\Model\OrderModel;
 use App\App\Service\OrderService;
 use App\App\Model\CustomerModel;
+use Exception;
 use Nette\Application\UI\Form;
 use Nette\Utils\ArrayHash;
+use stdClass;
 use Ublaboo\DataGrid\DataGrid;
 use App\App\Model\Types;
 use Tracy\ILogger;
+use Ublaboo\DataGrid\Exception\DataGridException;
 
 /**
  * Presenter pro výpis
  */
 class OrdersPresenter extends BasePresenter
 {
-    /** @var OrderModel  */
-    public $orderModel;
+    public OrderModel $orderModel;
     
-    /** @var OrderService */
-    public $orderService;
+    public OrderService $orderService;
     
-    /** @var CustomerModel  */
-    public $customerModel;
+    public CustomerModel $customerModel;
     
-    /** @var ILogger @inject */
-    public $log;
-    /** @var int */
-    public $id;
+    public ILogger $log;
+
+    public int $id;
     
     public function __construct(OrderModel $orderModel, OrderService $orderService, CustomerModel $customerModel)
     {
+        parent::__construct();
         $this->orderModel = $orderModel;
         $this->orderService = $orderService;
         $this->customerModel = $customerModel;
@@ -42,7 +42,7 @@ class OrdersPresenter extends BasePresenter
      * @param int $id
      * @return void
      */
-    public function actionEdit(int $id)
+    public function actionEdit(int $id) : void
     {
         $this->id = $id;
     }
@@ -50,7 +50,7 @@ class OrdersPresenter extends BasePresenter
     /**
      * @param string $name
      * @return DataGrid
-     * @throws \Ublaboo\DataGrid\Exception\DataGridException
+     * @throws DataGridException
      */
     public function createComponentGridList(string $name) : DataGrid
     {
@@ -111,11 +111,11 @@ class OrdersPresenter extends BasePresenter
      * @param ArrayHash $data
      * @return void
      */
-    public function saveData(Form $form, \stdClass $data) : void
+    public function saveData(Form $form, stdClass $data) : void
     {
         try {
             $this->orderService->saveData($data);
-        } catch (\Exception $e)
+        } catch (Exception $e)
         {
             $this->log->log('Chyba při ukládání dat z formuláře '.$e->getMessage(),'ERROR');
         }

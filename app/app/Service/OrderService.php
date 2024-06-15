@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace App\App\Service;
 
 use App\App\Model\OrderModel;
-use Nette\Utils\ArrayHash;
+use Exception;
 use Nette\Utils\DateTime;
+use stdClass;
 
 class OrderService
 {
     
-    /** @var OrderModel */
-    public $orderModel;
+    public OrderModel $orderModel;
     
     public function __construct(OrderModel $orderModel)
     {
@@ -19,10 +19,11 @@ class OrderService
     }
     
     /**
-     * @param \stdClass $data
+     * @param stdClass $data
      * @return void
+     * @throws Exception
      */
-    public function saveData(\stdClass $data)
+    public function saveData(stdClass $data) : void
     {
        /** @var DateTime $deliveryAt */
        $deliveryAt = $data->deliveryAt;
