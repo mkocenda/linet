@@ -1,18 +1,31 @@
 {block content}
 
 {form editForm}
-                {label orderNumber class=>"form-control form-control-lg"/}
+    <div class="form-row">
+        <div class="form-group col-md-6 row">
+            {label orderNumber class=>"col-sm-3 col-form-label"/}
+            <div class="col-sm-9">
                 {input orderNumber}
-
-                {label deliveryAt class=>"form-control form-control-lg"/}
+            </div>
+                {label deliveryAt class=>"col-sm-3 col-form-label"/}
+            <div class="col-sm-9">
                 {input deliveryAt}
-
-                {label customer class=>"form-control form-control-lg"/}
+            </div>
+                {label customer class=>"col-sm-3 col-form-label"/}
+            <div class="col-sm-9">
                 {input customer}
-
-                {label contract class=>"form-control form-control-lg"/}
+            </div>
+                {label contract class=>"col-sm-3 col-form-label"/}
+            <div class="col-sm-9">
                 {input contract}
-
-                {label status class=>"form-control form-control-lg"/}
+            </div>
+        </div>
+        <div class="form-group col-md-6 row">
+            {label status class=>"col-sm-3 col-form-label"/}
+            <div class="col-sm-9">
                 {input status}
+            </div>
+        </div>
+    </div>
+    {input submit}
 {/form}
