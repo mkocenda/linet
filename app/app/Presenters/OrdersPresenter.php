@@ -98,7 +98,7 @@ class OrdersPresenter extends BasePresenter
             'orderNumber'=>$order->orderNumber,
             'deliveryAt'=>$order->requestedDeliveryAt,
             'customer'=>$order->customer->id,
-            'partner'=>$order->contract->name,
+            'contract'=>$order->contract->name,
             'status'=>$order->status->id,
         ));
         
@@ -119,5 +119,6 @@ class OrdersPresenter extends BasePresenter
         {
             $this->log->log('Chyba při ukládání dat z formuláře '.$e->getMessage(),'ERROR');
         }
+        $this->redirect(':App:Orders:');
     }
 }
