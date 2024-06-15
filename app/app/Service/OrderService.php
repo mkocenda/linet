@@ -5,6 +5,8 @@ namespace App\App\Service;
 
 use App\App\Model\OrderModel;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\DateTime;
+
 class OrderService
 {
     
@@ -22,6 +24,9 @@ class OrderService
      */
     public function saveData(\stdClass $data)
     {
+       /** @var DateTime $deliveryAt */
+       $deliveryAt = $data->deliveryAt;
+       $data->deliveryAt = $deliveryAt->format('Y-m-d H:m:sp');
        $this->orderModel->saveOrderData($data);
     }
 }

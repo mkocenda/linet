@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\App\Model;
 
-use Nette\Utils\ArrayHash;
-use Nette\Utils\Json;
-
 class OrderModel extends JSONDBModel
 {
     
@@ -33,13 +30,24 @@ class OrderModel extends JSONDBModel
     /**
      * @param \stdClass $data
      * @return void
+     * @throws \Exception
      */
     public function saveOrderData(\stdClass $data)
     {
         $records = $this->listAllRecords();
+        $types = new Types();
         foreach ($records as $key=>$record)
         {
-            if ($record->id == $data->id) { $records[$key] = $data; bdump($records[$key]); }
+            if ($record->id == $data->id) {
+                $order = $this->getOrder($record->id);
+                $order->orderNumber = $data->orderNumber;
+                $order->requestedDeliveryAt = $data->deliveryAt;
+                $order->contract->name = $data->contract;
+                $order->status->id = $data->status;
+                $order->status->name = $types->getStatus($data->status);
+                
+                $records[$key] = $order;
+            }
         }
         $this->saveData($records);
     }
