@@ -26,20 +26,20 @@ class JSONDBModel
     
     
     /**
-     * @param ArrayHash $data
-     * @return void
+     * @param array $data
+     * @return false|int
      */
-    public function saveData(ArrayHash $data)
+    public function saveData(array $data)
     {
         return file_put_contents($this->JSONfile, $this->encode($data));
     }
     
     
     /**
-     * @param Json $value
-     * @return array
+     * @param array $value
+     * @return string
      */
-    private function encode(JSON $value) : array
+    private function encode(array $value) : string
     {
         $json = json_encode($value);
         if (json_last_error()) {
