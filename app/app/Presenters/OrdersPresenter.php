@@ -9,6 +9,7 @@ use App\App\Model\CustomerModel;
 use Exception;
 use Nette\Application\UI\Form;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\DateTime;
 use stdClass;
 use Ublaboo\DataGrid\DataGrid;
 use App\App\Model\Types;
@@ -70,7 +71,8 @@ class OrdersPresenter extends BasePresenter
             return $dataSource->status->name;
         });
         $grid->addColumnDateTime('statusCreatedAt', 'StatusCreatedAt')->setRenderer(function ($dataSource) {
-            return $dataSource->status->createdAt;
+            $createdAt = new DateTime($dataSource->status->createdAt);
+            return $createdAt->format('d. m. Y H:i:s');
         });
         
         $grid->addAction('edit', 'Edit', 'edit', ['id'])
