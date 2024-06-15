@@ -15,11 +15,12 @@ class RouterFactory
 	{
 		$router = new RouteList;
 
-		$router[] = $appRouter = new RouteList("");
+		$router[] = $appRouter = new RouteList("App");
         /** Defaultní směrování na presenter */
-		$appRouter[] = new Route("", "App:Orders:");
-		$appRouter[] = new Route("/orders/", "App:Orders:");
-		$appRouter[] = new Route("/orders/edit/{id}", "App:Orders:");
+		$appRouter[] = new Route("", "Orders:");
+		$appRouter[] = new Route("orders/", "Orders:");
+		$appRouter[] = new Route("orders/edit/{id}", "Orders:");
+        $appRouter[] = new Route("api/v1/api-list/", "ApiJson:apiList");
 
 		return $router;
 	}
