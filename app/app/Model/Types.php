@@ -10,4 +10,12 @@ class Types
     const contractType = array('partner-sale' => 'partner', 'customer-sale' => 'customer');
     
     
+    /**
+     * @param string $key
+     * @return string
+     */
+    public function getStatus(string $key) : string
+    {
+        return  self::STATUS[$key];
+    }
 }
