@@ -7,8 +7,10 @@
 		"nette/deprecated": "^3.0",
 		"latte/latte":"^v2.8.0",
 		"ublaboo/datagrid": "^v6.7.1",
-		"ublaboo/datagrid-nette-database-data-source": "^v2.1.1"
-    },
+		"ublaboo/datagrid-nette-database-data-source": "^v2.1.1",
+		"google/apiclient": "^2.0",
+		"symplify/easy-coding-standard": "^9.0"
+	},
 	"config": {
 		"platform": {
 			"php": "8.0"
