@@ -3,15 +3,38 @@ declare(strict_types=1);
 
 namespace App\App\Model;
 
+use stdClass;
 class OrderModel extends JSONDBModel
 {
     
     /**
      * @return array
      */
-    public function listAllRecords() : array
+    public function getAllRecords() : array
     {
         return $this->loadData();
+    }
+    
+    /**
+     * @return array
+     */
+    public function getDataForGrid()
+    {
+        $records = $this->getAllRecords();
+        $data = array();
+        foreach ($records as $key=>$record){
+            $tmpData = new stdClass();
+            $tmpData->id = $record->id;
+            $tmpData->orderNumber = $record->orderNumber;
+            $tmpData->createdAt = $record->createdAt;
+            $tmpData->requestedDeliveryAt = $record->requestedDeliveryAt;
+            $tmpData->customer = $record->customer->name;
+            $tmpData->contract = $record->contract->name;
+            $tmpData->status = $record->status->name;
+            $tmpData->statusCreatedAt = $record->status->createdAt;
+            $data[$key] = $tmpData;
+        }
+        return $data;
     }
     
     /**
@@ -20,7 +43,7 @@ class OrderModel extends JSONDBModel
      */
     public function getOrder(int $id)
     {
-        foreach ($this->listAllRecords() as $record)
+        foreach ($this->getAllRecords() as $record)
         {
             if ($record->id === $id) return $record;
         }
@@ -34,7 +57,7 @@ class OrderModel extends JSONDBModel
      */
     public function saveOrderData(\stdClass $data)
     {
-        $records = $this->listAllRecords();
+        $records = $this->getAllRecords();
         $types = new Types();
         foreach ($records as $key=>$record)
         {
