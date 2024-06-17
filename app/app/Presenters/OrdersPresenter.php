@@ -137,7 +137,7 @@ class OrdersPresenter extends BasePresenter
         try{
             $this->orderService->changeOrderStatus($id, $new_status);
         } catch (Exception $e){
-            $this->log->log('Chyba při změně statusu objednávky', 'error');
+            $this->log->log('Chyba při změně statusu objednávky '.$e->getMessage(), 'error');
         }
         
         if ($this->isAjax()) {
