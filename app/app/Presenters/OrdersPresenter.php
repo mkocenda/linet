@@ -121,8 +121,16 @@ class OrdersPresenter extends BasePresenter
         $this->redirect(':App:Orders:');
     }
     
-    public function changeStatus(string $id)
+    public function changeStatus(string $id, string $new_status)
     {
-    
+        try{
+            $this->orderService->changeOrderStatus($id, $new_status);
+        } catch (Exception $e){
+            $this->log->log('Chyba při změně statusu objednávky', 'error');
+        }
+        
+        if ($this->isAjax()) {
+            $this['columnsGrid']->redrawItem($id);
+        }
     }
 }
