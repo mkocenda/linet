@@ -63,12 +63,11 @@ class OrderModel extends JSONDBModel
         {
             if ($record->id == $data->id) {
                 $order = $this->getOrder($record->id);
-                $order->orderNumber = $data->orderNumber;
-                $order->requestedDeliveryAt = $data->deliveryAt;
-                $order->contract->name = $data->contract;
-                $order->status->id = $data->status;
-                $order->status->name = $types->getStatus($data->status);
-                
+                if ($order->orderNumber <> $data->orderNumber) { $order->orderNumber = $data->orderNumber; }
+                if ($order->requestedDeliveryAt <> $data->deliveryAt) {$order->requestedDeliveryAt = $data->deliveryAt; }
+                if ($order->contract->name <> $data->contract) {$order->contract->name = $data->contract; }
+                if ($order->status->id <> $data->status) {$order->status->id = $data->status; }
+                if ($order->status->name <> $types->getStatus($data->status)) {$order->status->name = $types->getStatus($data->status); }
                 $records[$key] = $order;
             }
         }
