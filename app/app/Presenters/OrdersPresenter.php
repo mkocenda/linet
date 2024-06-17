@@ -9,7 +9,6 @@ use App\App\Model\CustomerModel;
 use Exception;
 use Nette\Application\UI\Form;
 use Nette\Utils\ArrayHash;
-use Nette\Utils\DateTime;
 use stdClass;
 use Ublaboo\DataGrid\DataGrid;
 use App\App\Model\Types;
@@ -56,28 +55,26 @@ class OrdersPresenter extends BasePresenter
     public function createComponentGridList(string $name) : DataGrid
     {
         $grid = new DataGrid($this, $name);
-        $grid->setDataSource($this->orderModel->listAllRecords());
+        $grid->setDataSource($this->orderModel->getDataForGrid());
         $grid->setDefaultSort('id');
         $grid->addColumnText('orderNumber', 'OrderNumber');
         $grid->addColumnDateTime('createdAt', 'CreatedAt');
         $grid->addColumnDateTime('requestedDeliveryAt', 'RequestedDeliveryAt');
-        $grid->addColumnDateTime('customer', 'Customer')->setRenderer(function ($dataSource) {
-            return $dataSource->customer->name;
-        });
-        $grid->addColumnDateTime('contract', 'Contract')->setRenderer(function ($dataSource) {
-            return $dataSource->contract->name;
-        });
-        $grid->addColumnDateTime('status', 'Status')->setRenderer(function ($dataSource) {
-            return $dataSource->status->name;
-        });
-        $grid->addColumnDateTime('statusCreatedAt', 'StatusCreatedAt')->setRenderer(function ($dataSource) {
-            $createdAt = new DateTime($dataSource->status->createdAt);
-            return $createdAt->format('d. m. Y H:i:s');
-        });
+        $grid->addColumnText('customer', 'Customer');
+        $grid->addColumnText('contract', 'Contract');
+        $grid->addColumnStatus('status', 'Status')
+            ->addOption('NEW','new')
+            ->endOption()
+            ->addOption('ACT','active')
+            ->endOption()
+            ->addOption('END','closed')
+            ->endOption()
+        ->onChange[] = [$this, 'changeStatus'];
+        $grid->addColumnDateTime('statusCreatedAt', 'StatusCreatedAt');
         
-        $grid->addAction('edit', 'Edit', 'edit', ['id'])
-            ->setTitle('Edit')
-            ->setAlign('right');
+        $grid->addAction('edit', 'Edit', 'edit',  ['id'])
+             ->setTitle('Edit')
+             ->setAlign('right');
         return $grid;
     }
     
@@ -122,5 +119,10 @@ class OrdersPresenter extends BasePresenter
             $this->log->log('Chyba při ukládání dat z formuláře '.$e->getMessage(),'ERROR');
         }
         $this->redirect(':App:Orders:');
+    }
+    
+    public function changeStatus(string $id)
+    {
+    
     }
 }
