@@ -85,8 +85,8 @@ class OrdersPresenter extends BasePresenter
     {
         $form = new Form();
         $form->addHidden('id',$this->id);
-        $form->addText('orderNumber','OrderNumber');
-        $form->addDateTime('deliveryAt','deliveryAt');
+        $form->addText('orderNumber','OrderNumber')->addRule($form::Blank, 'Pole orderNumber musí být vyplněné')->setRequired();
+        $form->addDateTime('deliveryAt','deliveryAt')->addRule($form::Blank, 'Pole deliveryAt musí být vyplněné')->setRequired();
         $form->addSelect('customer','customer', $this->customerModel->getCustomers());
         $form->addSelect('contract','contract', Types::contractType);
         $form->addSelect('status','status', Types::STATUS);
@@ -102,6 +102,7 @@ class OrdersPresenter extends BasePresenter
         ));
         
         $form->onSuccess[] = [$this, 'saveData'];
+        $form->onError[] = [$this, 'errorData'];
         return $form;
     }
     
@@ -119,6 +120,16 @@ class OrdersPresenter extends BasePresenter
             $this->log->log('Chyba při ukládání dat z formuláře '.$e->getMessage(),'ERROR');
         }
         $this->redirect(':App:Orders:');
+    }
+    
+    public function errorData(Form $form)
+    {
+        foreach ($form->getErrors() as $error)
+        {
+            $message = $error.'<br>';
+        }
+        $this->presenter->flashMessage($message);
+
     }
     
     public function changeStatus(string $id, string $new_status)
